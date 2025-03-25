@@ -37,11 +37,11 @@
             </div>
         </nav>
     </header> *@
-    <header class="row m-0 p-0 header-gradient justify-content-center align-content-start" style="min-height: 400px !important">
+    <header class="row m-0 p-0 millitary-back-70 justify-content-center align-content-start" style="min-height: 400px !important">
         <div class=" w-100 h-100 p-0 row m-0 p-0 justify-content-center align-content-between" style="min-height: 400px !important">
             <div class="d-flex bg-dark-transparent">
-                <div class="container py-1 d-flex justify-content-between">
-                    <div class="d-flex justify-content-end">
+                <div class="container py-1 d-flex justify-content-sm-between justify-content-end">
+                    <div class="d-flex justify-content-end hide-on-small-screns">
                         <div class="d-flex align-content-center mx-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill me-1 my-1" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
@@ -55,6 +55,7 @@
                         </div>
                     </div>
                     <div class="d-flex justify-content-end">
+
                         <div class="align-content-center mx-2">
                             <a href="https://www.facebook.com/abmatviychuk">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-facebook link-secondary" viewBox="0 0 16 16">
@@ -78,12 +79,20 @@
                                 </svg>
                             </a>
                         </div>
+
+
+                        <div class="align-content-center mx-2">
+                            <select id="lengSelect" class="form-select d-inline-block fs-6 py-0 ps-2">
+                                <option value="ua">UA</option>
+                                <option value="en">EN</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
-            <div class="container px-0 px-sm-3 py-2 m-0 pb-3 mb-4 pb-md-4 mb-md-5" style="">
+            <div class="container bg-dark-transparent rounded-2 px-0 px-sm-3 py-2 m-0 pb-3 mb-4 pb-md-4 mb-md-5" style="">
                 <div class="d-inline-block border-0 w-100 rounded-3">
-                    <h1 class="text-gold fs-2 mb-3 px-3 px-sm-0" style="font-weight: 600">Оскарження штрафу ТЦК: Захистіть свої права!</h1>
+                    <h1 class="text-gold fs-2 mb-3 px-3 px-sm-0" style="font-weight: 600">@ViewData["HeaderTitle"]</h1>
                     <p class="border-0 px-3" style="border-bottom-left-radius: .25rem !important; border-bottom-right-radius: .25rem !important; font-weight: 500">
                         @*
                         <ul class="list-unstyled">
@@ -99,11 +108,10 @@
                         </ul> *@
                     </p>
                         <p class="text-white mb-4 p-0 mx-auto fw-normal fs-6 px-3 px-sm-0" style="max-width: 630px; line-height: 22px">
-                            Ми допоможемо вам захистити свої права та оскаржити штраф законним шляхом!
-                            Наша команда юристів має великий досвід у військовому праві та знає всі нюанси оскарження адміністративних стягнень.
+                            @ViewData["HeaderDescription"]
                         </p>
 
-                        <a href="#" class="btn btn-light p-3 px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#orderFormModal">Замовити оскарження</a>
+                    <a href="#" class="btn btn-light p-3 px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#orderFormModal">@ViewData["HeaderButton"]</a>
                 </div>
             </div>
 
@@ -115,20 +123,23 @@
             @RenderBody()
         </main>
     </div>
+    @{
+        var lang = ViewBag.Cookie;
+    }
 <footer class="footer text-white py-3 reverce-header-gradient" style="">
     <div class="container px-2 px-md-4">
         <div class="row text-center text-md-start align-items-center">
             <!-- Информация об адвокате -->
             <div class="col-md-5 mb-3 mb-md-0 px-0 px-md-3">
-                <h4 class="fw-bold mb-2">Адвокат Дмитро Матвійчук</h4>
-                <p class="fw-normal text-wrap mx-auto" style="font-size: 14px; line-height: 20px; max-width: 90%;">
-                    Надаю послуги у різних галузях права: цивільного, військового, кримінального та ін. Моїми клієнтами є мешканці як столиці, так і інших міст України. Я готовий надати гарантію на свою роботу.
+                <h4 class="fw-bold mb-2">@(lang == "ua" ? "Адвокат Дмитро Матвійчук" : "Lawyer Dmitry Matviychuk")</h4>
+                <p class="fw-normal text-wrap" style="font-size: 14px; line-height: 20px; max-width: 90%;">
+                        @(lang == "ua" ? "Надаю послуги у різних галузях права: цивільного, військового, кримінального та ін. Моїми клієнтами є мешканці як столиці, так і інших міст України. Я готовий надати гарантію на свою роботу." : "I provide services in various areas of law: civil, military, criminal, and more. My clients are residents of both the capital and other cities of Ukraine. I am ready to guarantee the quality of my work.")
                 </p>
             </div>
 
             <!-- Контакты -->
             <div class="col-md-4 mb-3 mb-md-0 px-0 px-md-3">
-                <h4 class="fw-bold mb-2 text-md-start text-center">Контакти</h4>
+                <h4 class="fw-bold mb-2 text-md-start text-center">@(lang == "ua" ? "Контакти" : "Contacts")</h4>
                 <ul class="list-unstyled text-md-start text-center">
                     <li class="mb-2">
                         <i class="fa-solid fa-phone me-2"></i>
@@ -136,7 +147,7 @@
                     </li>
                     <li class="mb-2">
                         <i class="fa-solid fa-location-dot me-2"></i>
-                        01024, м. Київ, вул. Павла Скоропадського, 9А, оф. 401
+                            @(lang == "ua" ? "01024, м. Київ, вул. Павла Скоропадського, 9А, оф. 401" : "01024, Kyiv, Pavla Skoropadskogo St., 9A, office 401")
                     </li>
                     <li class="mb-2">
                         <i class="fa-solid fa-envelope me-2"></i>
@@ -181,7 +192,7 @@
 
         <!-- Копирайт -->
         <div class="text-center">
-            <p class="mb-0" style="font-size: 12px;">2025 © Всі права захищені.</p>
+                <p class="mb-0" style="font-size: 12px;">@(lang == "ua" ? "2025 © Всі права захищені." : "2025 © All rights reserved.")</p>
         </div>
     </div>
 </footer>
@@ -217,7 +228,6 @@
         </div>
     </div>
 </div>
-
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

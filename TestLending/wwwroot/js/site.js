@@ -28,4 +28,27 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+
+    function getCookie(name) {
+        let cookies = document.cookie.split('; ');
+        for (let cookie of cookies) {
+            let [key, value] = cookie.split('=');
+            if (key === name) {
+                return decodeURIComponent(value);
+            }
+        }
+        return null;
+    }
+
+    let savedLang = getCookie("Leng");
+    if (savedLang) {
+        $("#lengSelect").val(savedLang);
+    }
+
+    $("#lengSelect").on("change", function () {
+        let selectedLang = $(this).val();
+        fetch(`/set-leng/${selectedLang}`).then(() => { location.reload() })
+            .catch(e => console.error(e));
+    });
 });
+

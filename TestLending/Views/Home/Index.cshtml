@@ -1,5 +1,15 @@
-﻿@{
+﻿@using static TestLending.Models.Models
+@model List<PageData>
+@{
+    var leng = ViewBag.Cookie;
     ViewData["Title"] = "Оскарження штрафу ТЦК";
+    var headerData = Model.Where(x => x.SectionName == "Header").ToList();
+    var headerTitle = headerData.Where(x => x.SectionContentType == "Title").FirstOrDefault();
+    var headerDescr = headerData.Where(x => x.SectionContentType == "Description").FirstOrDefault();
+    var headerButton = headerData.Where(x => x.SectionContentType == "Button Text").FirstOrDefault();
+    ViewData["HeaderTitle"] = leng == "ua" ? headerTitle?.ua ?? "" : headerTitle?.en ?? "";
+    ViewData["HeaderDescription"] = leng == "ua" ? headerDescr?.ua ?? "" : headerDescr?.en ?? "";
+    ViewData["HeaderButton"] = leng == "ua" ? headerButton?.ua ?? "" : headerButton?.en ?? "";
     // string advokatinlaw = "advokatinlaw";
 }
 
@@ -17,10 +27,28 @@
 Ми допоможемо вам оскаржити його законним шляхом!">
 <meta property="og:image" content="">
 <meta property="og:type" content="article">
-
-<p class="text-center fs-4 fw-bold">Для кого ця інформація може бути важливою</p>
+<p class="text-center fs-4 fw-bold">
+    @(leng == "ua" ? Model.Where(x => x.SectionName == "Useful for" && x.SectionContentType == "Title").FirstOrDefault()?.ua ?? "" : Model.Where(x => x.SectionName == "Useful for" && x.SectionContentType == "Title").FirstOrDefault()?.en ?? "")
+</p>
 <div class="card-container">
-    <div class="card-item border-0 m-0">
+
+    @for (var i = 1; i <= Model.Where(x => x.SectionName == "Useful for").Max(x => x.Order); ++i)
+    {
+        var blockTitle = Model.Where(x => x.Order == i && x.SectionName == "Useful for" && x.SectionContentType == "Block title").FirstOrDefault();
+        var blockDescr = Model.Where(x => x.Order == i && x.SectionName == "Useful for" && x.SectionContentType == "Block description").FirstOrDefault();
+        <div class="card-item border-0 m-0">
+            <div class="card-body mx-auto align-content-center row" style="width: 100%">
+                <p class="text-center text-blue m-0 p-0" style="height: 210px; line-height: 20px">
+                    <img src="~/source@(blockTitle?.Img ?? "")" class="mb-3 small-img" /><br /><b class="fw-bold fs-6">@(leng == "ua" ? blockTitle?.ua ?? "" : blockTitle?.en ?? "")</b>@* <b class="fw-bold fs-6 text-nowrap">Військово-зобов'язаним,</b><br /><b class="fw-bold fs-6">які отримали<br />штраф від ТЦК.</b> *@
+                </p>
+                <hr />
+                <p class="m-0 p-0 text-center">
+                    @(leng == "ua" ? blockDescr?.ua ?? "" : blockDescr?.en ?? "")
+                </p>
+            </div>
+        </div>
+    }
+    @* <div class="card-item border-0 m-0">
         <div class="card-body mx-auto align-content-center row" style="width: 100%">
             <p class="text-center text-blue m-0 p-0" style="height: 210px; line-height: 20px">
                 <img src="~/source/military-hat.png" class="mb-3 small-img"/><br /><b class="fw-bold fs-6 text-nowrap">Військово-зобов'язаним,</b><br /><b class="fw-bold fs-6">які отримали<br />штраф від ТЦК.</b>
@@ -52,13 +80,26 @@
                 Боїтеся, що оскарження буде складним та дорогим?
             </p>
         </div>
-    </div>
+    </div> *@
 </div>
 
-<div class="w-100 radial-header-gradient my-3 rounded">
+<div class="w-100 millitary-back my-3 rounded">
     <div class="w-100 ">
         <div class="card-container pt-4">
-            <div class="card-item bg-light rounded">
+            @for (var i = 1; i <= Model.Where(x => x.SectionName == "Presentation of Services").Max(x=>x.Order); ++i)
+            {
+                var tempData = Model.Where(x => x.Order == i && x.SectionName == "Presentation of Services" && x.SectionContentType == "Block title").FirstOrDefault();
+                if (tempData != null)
+                {
+                    <div class="card-item bg-light rounded">
+                        <div class="d-flex flex-column align-items-center p-3 h-100">
+                            <img src="~/source@(tempData.Img)" class="my-2" style="max-width: 50px" />
+                            <p class="text-center text-blue fw-bold">@(leng == "ua" ? tempData.ua : tempData.en)</p>
+                        </div>
+                    </div>
+                }
+            }
+            @* <div class="card-item bg-light rounded">
                 <div class="d-flex flex-column align-items-center p-3 h-100">
                     <img src="~/source/scroll.png" class="my-2" style="max-width: 50px" />
                     <p class="text-center text-blue fw-bold">Підстави для оскарження штрафу ТЦК.</p>
@@ -93,24 +134,42 @@
                     <img src="~/source/return.png" class="my-2" style="max-width: 50px" />
                     <p class="text-center text-blue fw-bold">Що робити, якщо вашу скаргу відхилили.</p>
                 </div>
-            </div>
+            </div> *@
         </div>
-
         <div class="text-center my-5 py-5">
             <div class="bg-dark-transparent text-white py-2 mb-3">
-                <h2 class="mb-1">Отримали штраф за неявку по повістці?</h2>
-                <p class="m-0 p-0">Ми допоможемо вам оскаржити його законним шляхом!</p>
+                <h2 class="mb-1">@(leng == "ua" ? Model.Where(x => x.SectionName == "Presentation of Services" && x.SectionContentType == "Title").FirstOrDefault()?.ua ?? "" : Model.Where(x => x.SectionName == "Presentation of Services" && x.SectionContentType == "Title").FirstOrDefault()?.en ?? "")</h2>
+                <p class="m-0 p-0">@(leng == "ua" ? Model.Where(x => x.SectionName == "Presentation of Services" && x.SectionContentType == "Description").FirstOrDefault()?.ua ?? "" : Model.Where(x => x.SectionName == "Presentation of Services" && x.SectionContentType == "Description").FirstOrDefault()?.en ?? "")</p>
             </div>
-            <a href="#" class="btn btn-light p-3 px-4 fw-bold " data-bs-toggle="modal" data-bs-target="#orderFormModal">Замовити оскарження</a>
+            <a href="#" class="btn btn-light p-3 px-4 fw-bold " data-bs-toggle="modal" data-bs-target="#orderFormModal">@(leng == "ua" ? Model.Where(x => x.SectionName == "Presentation of Services" && x.SectionContentType == "Button Text").FirstOrDefault()?.ua ?? "" : Model.Where(x => x.SectionName == "Presentation of Services" && x.SectionContentType == "Button Text").FirstOrDefault()?.en ?? "")</a>
         </div>
     </div>
 </div>
 
 <div class="section-responsive mt-4">
-    <p class="text-center fs-4 fw-bold">Що ви отримаєте в результаті</p>
+    <p class="text-center fs-4 fw-bold">
+        @(leng == "ua" ? Model.Where(x => x.SectionName == "Your advantages" && x.SectionContentType == "Title").FirstOrDefault()?.ua ?? "" : Model.Where(x => x.SectionName == "Your advantages" && x.SectionContentType == "Title").FirstOrDefault()?.en ?? "")
+    </p>
     
     <div class="w-100">
-        <div class="feature-box">
+        @for (var i = 0; i <= Model.Where(x => x.SectionName == "Your advantages").Max(x => x.Order); ++i)
+        {
+            var title = Model.Where(x => x.Order == i && x.SectionName == "Your advantages" && x.SectionContentType == "Block title").FirstOrDefault();
+            var descr = Model.Where(x => x.Order == i && x.SectionName == "Your advantages" && x.SectionContentType == "Block description").FirstOrDefault();
+            if (title != null && descr != null)
+            {
+                <div class="feature-box">
+                    <div class="feature-image">
+                        <img src="~/source@(title.Img)" style="max-width: 80px" />
+                    </div>
+                    <div class="feature-content">
+                        <p class="fs-5 fw-bold mb-2">@(leng == "ua" ? title.ua : title.en)</p>
+                    </div>
+                    <img src="~/source@(descr.Img)" class="ms-auto" style="max-width: 50px; max-height: 50px" />
+                </div>
+            }
+        }
+        @* <div class="feature-box">
             <div class="feature-image">
                 <img src="~/source/rich-man.png" style="max-width: 80px" />
             </div>
@@ -168,25 +227,53 @@
                 <p class="fs-5 fw-bold mb-2">Збережете свої гроші та час.</p>
             </div>
             <img src="~/source/check.png" class="ms-auto" style="max-width: 50px; max-height: 50px" />
-        </div>
+        </div> *@
     </div>
 </div>
 
 <div class="w-100 mt-4">
-    <p class="fs-4 fw-bold text-center">Реальні кейси</p>
-    <div class="row justify-content-center">
-        <div class="col-12 col-md-8">
-            <iframe width="100%" height="315" src="https://www.youtube.com/embed/1_wrWBuaZ4o?si=jbvPYrK-TELTzWwJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+    @{
+        var realCasesTitle = Model.Where(x => x.SectionName == "Real cases" && x.SectionContentType == "Title").FirstOrDefault();
+    }
+    @if (realCasesTitle != null)
+    {
+        <p class="fs-4 fw-bold text-center">@(leng == "ua" ? realCasesTitle.ua : realCasesTitle.en)</p>
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8">
+                <iframe width="100%" height="315" src="https://www.youtube.com/embed/1_wrWBuaZ4o?si=jbvPYrK-TELTzWwJ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </div>
         </div>
-    </div>
+    }
 </div>
 
 <div class="w-100 mt-4 row justify-content-start px-md-5 px-3 mx-auto">
     <p class="text-center fw-bold fs-3 mb-4">
-        Чому саме ми?
+        @{
+            var tempDataWhyUs = Model.Where(x => x.SectionName == "Why us" && x.SectionContentType == "Title").FirstOrDefault();
+        }
+        @(leng == "ua" ? tempDataWhyUs?.ua ?? "" : tempDataWhyUs?.en ?? "")
     </p>
-
-    <div class="col-12 p-0">
+    @for (var i = 0; i <= Model.Where(x => x.SectionName == "Why us").Max(x => x.Order); ++i)
+    {
+        var whyTitle = Model.Where(x => x.Order == i && x.SectionName == "Why us" && x.SectionContentType == "Block title").FirstOrDefault();
+        var whyDescr = Model.Where(x => x.Order == i && x.SectionName == "Why us" && x.SectionContentType == "Block description").FirstOrDefault();
+        if (whyTitle != null && whyDescr != null) {
+            <div class="col-12 p-0">
+                <div class="d-flex justify-content-start align-content-end align-items-end border-bottom">
+                    <img src="~/source@(whyTitle.Img)" class="my-2 п-0 me-2" style="max-width: 80px" />
+                    <div class="row м-0 п-0">
+                        <p class="м-0 п-0 fs-5 fw-bold">
+                            @(leng == "ua" ? whyTitle.ua : whyTitle.en)
+                        </p>
+                        <p class="п-0 fs-6 ">
+                            @(leng == "ua" ? whyDescr.ua : whyDescr.en)
+                        </p>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+@*     <div class="col-12 p-0">
         <div class="d-flex justify-content-start align-content-end align-items-end border-bottom">
             <img src="~/source/medal.png" class="my-2 п-0 me-2" style="max-width: 80px" />
             <div class="row м-0 п-0">
@@ -224,30 +311,43 @@
                 </p>
             </div>
         </div>
-    </div>
+    </div> *@
 
 </div>
 
 <div class="w-100 mt-4 row justify-content-start px-md-5 px-3 mx-auto">
-    <p class="text-center fw-bold fs-3 mb-1">
-        Ваші права
-    </p>
-    <p class="text-center fs-6 mb-4">В Україні кожен громадянин має право оскаржити штраф за неявку по повістці. Якщо штраф виставлено незаконно або ви маєте обґрунтовані причини для неявки, ми допоможемо вам відстояти свої права.</p>
+    @{
+        var yourRightTitle = Model.Where(x => x.SectionName == "Your Rights" && x.SectionContentType == "Title").FirstOrDefault();
+        var yourRightDescr = Model.Where(x => x.SectionName == "Your Rights" && x.SectionContentType == "Description").FirstOrDefault();
+    }
+    @if (yourRightDescr != null && yourRightTitle != null) {
+        <p class="text-center fw-bold fs-3 mb-1">
+            @(leng == "ua" ? yourRightTitle.ua : yourRightTitle.en)
+        </p>
+        <p class="text-center fs-6 mb-4">@(leng == "ua" ? yourRightDescr.ua : yourRightDescr.en)</p>
+    }
 
-    <div class="col-12 p-0">
-        <div class="d-flex justify-content-start align-content-end align-items-end border-bottom">
-            <img src="~/source/hospital.png" class="my-2 п-0 me-2" style="max-width: 80px" />
-            <div class="row м-0 п-0">
-                <p class="м-0 п-0 fs-5 fw-bold">
-                    Медичні обставини
-                </p>
-                <p class="п-0 fs-6 ">
-                    Серйозні проблеми зі здоров'ям або лікування можуть бути причиною неявки. Медичні довідки та документи підтвердять цей факт.
-                </p>
+    @for (var i = 0; i <= Model.Where(x => x.SectionName == "Your Rights").Max(x => x.Order); ++i) {
+        var yourTitle = Model.Where(x => x.Order == i && x.SectionContentType == "Block title" && x.SectionName == "Your Rights").FirstOrDefault();
+        var yourDescr = Model.Where(x => x.Order == i && x.SectionContentType == "Block description" && x.SectionName == "Your Rights").FirstOrDefault();
+        if (yourDescr != null && yourTitle != null)
+        {
+            <div class="col-12 p-0">
+                <div class="d-flex justify-content-start align-content-end align-items-end border-bottom">
+                    <img src="~/source@(yourTitle.Img)" class="my-2 п-0 me-2" style="max-width: 80px" />
+                    <div class="row м-0 п-0">
+                        <p class="м-0 п-0 fs-5 fw-bold">
+                            @(leng == "ua" ? yourTitle.ua : yourTitle.en)
+                        </p>
+                        <p class="п-0 fs-6 ">
+                            @(leng == "ua" ? yourDescr.ua : yourDescr.en)
+                        </p>
+                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-    <div class="col-12 p-0">
+        }
+    }
+   @*  <div class="col-12 p-0">
         <div class="d-flex justify-content-start align-content-end align-items-end border-bottom">
             <img src="~/source/airplane.png" class="my-2 п-0 me-2" style="max-width: 80px" />
             <div class="row м-0 п-0">
@@ -285,82 +385,107 @@
                 </p>
             </div>
         </div>
-    </div>
+    </div> *@
 
 </div>
-<div class="card card-body radial-header-gradient w-100 mt-4 row justify-content-start text-gold px-4 mx-auto">
-    <p class="text-center fw-bold fs-4 p-0">
-        Кроки до оскарження
-    </p>
-    <p class="text-center fs-6 text-white">Оскарження штрафу — це процес, який потребує чітких дій. Ми рекомендуємо дотримуватися наступних кроків:</p>
+<div class="card card-body millitary-back w-100 mt-4 row justify-content-start text-gold mx-auto p-0">
+    <div class="w-100 h-100 rounded bg-dark-transparent p-4 ">
+        @{
+            var staTitle = Model.Where(x => x.SectionContentType == "Title" && x.SectionName == "Steps to Appeal").FirstOrDefault();
+            var staDescr = Model.Where(x => x.SectionContentType == "Description" && x.SectionName == "Steps to Appeal").FirstOrDefault();
+        }
+        <p class="text-center fw-bold fs-4 p-0">
+            @(leng == "ua" ? staTitle?.ua ?? "" : staTitle?.en ?? "")
+        </p>
+        <p class="text-center fs-6 text-white">@(leng == "ua" ? staDescr?.ua ?? "": staDescr?.en ?? "")</p>
 
-    <div class="col-12 p-0">
-        <div class="d-flex justify-content-start align-content-end align-items-end border-bottom mb-3">
-            <img src="~/source/folder(1).png" class="my-2 п-0 me-3" style="max-width: 80px" />
-            <div class="row м-0 п-0">
-                <p class="м-0 п-0 fs-5 fw-bold mb-2">
-                    Збір доказів
-                </p>
-                <p class="п-0 fs-6 text-gray">
-                    Підготовка всіх документів, що підтверджують вашу позицію: медичні довідки, підтвердження виїзду, письмові свідчення.
-                </p>
+        @for (var i = 0; i <= Model.Where(x => x.SectionContentType == "Block title").Max(x => x.Order); ++i)
+        {
+            var statTitle = Model.Where(x => x.Order == i && x.SectionContentType == "Block title" && x.SectionName == "Steps to Appeal").FirstOrDefault();
+            var statDescr = Model.Where(x => x.Order == i && x.SectionContentType == "Block description" && x.SectionName == "Steps to Appeal").FirstOrDefault();
+            if (statTitle != null && statDescr != null) {
+                <div class="col-12 p-0 bg-transparent-light rounded">
+                    <div class="d-flex justify-content-start align-content-end align-items-end mb-3 px-2">
+                        <img src="~/source@(statTitle.Img)" class="my-2 п-0 me-3" style="max-width: 80px" />
+                        <div class="row м-0 п-0">
+                            <p class="м-0 п-0 fs-5 fw-bold mb-2">
+                                @(leng == "ua" ? statTitle.ua : statTitle.en)
+                            </p>
+                            <p class="п-0 fs-6 text-gray">
+                                @(leng == "ua" ? statDescr.ua : statDescr.en)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        @* <div class="col-12 p-0 bg-transparent-light rounded">
+            <div class="d-flex justify-content-start align-content-end align-items-end mb-3 px-2">
+                <img src="~/source/list.png" class="my-2 п-0 me-3" style="max-width: 80px" />
+                <div class="row м-0 п-0">
+                    <p class="м-0 п-0 fs-5 fw-bold mb-2">
+                        Підготовка та подача апеляційної скарги
+                    </p>
+                    <p class="п-0 fs-6 text-gray">
+                        Наша команда з адвокатом розробить необхідну документацію для подання скарги в орган, який наклав штраф.
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-12 p-0">
-        <div class="d-flex justify-content-start align-content-end align-items-end border-bottom mb-3">
-            <img src="~/source/list.png" class="my-2 п-0 me-3" style="max-width: 80px" />
-            <div class="row м-0 п-0">
-                <p class="м-0 п-0 fs-5 fw-bold mb-2">
-                    Підготовка та подача апеляційної скарги
-                </p>
-                <p class="п-0 fs-6 text-gray">
-                    Наша команда з адвокатом розробить необхідну документацію для подання скарги в орган, який наклав штраф.
-                </p>
+        <div class="col-12 p-0 bg-transparent-light rounded">
+            <div class="d-flex justify-content-start align-content-end align-items-end mb-3 px-2">
+                <img src="~/source/loupe.png" class="my-2 п-0 me-3" style="max-width: 80px" />
+                <div class="row м-0 п-0">
+                    <p class="м-0 п-0 fs-5 fw-bold mb-2">
+                        Розгляд скарги органами
+                    </p>
+                    <p class="п-0 fs-6 text-gray">
+                        Ваша справа буде розглянута відповідними органами, і ми триматимемо вас у курсі всіх етапів процесу.
+                    </p>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="col-12 p-0">
-        <div class="d-flex justify-content-start align-content-end align-items-end border-bottom mb-3">
-            <img src="~/source/loupe.png" class="my-2 п-0 me-3" style="max-width: 80px" />
-            <div class="row м-0 п-0">
-                <p class="м-0 п-0 fs-5 fw-bold mb-2">
-                    Розгляд скарги органами
-                </p>
-                <p class="п-0 fs-6 text-gray">
-                    Ваша справа буде розглянута відповідними органами, і ми триматимемо вас у курсі всіх етапів процесу.
-                </p>
+        <div class="col-12 p-0 mb-3 bg-transparent-light rounded">
+            <div class="d-flex justify-content-start align-content-end align-items-end px-2">
+                <img src="~/source/scale.png" class="my-2 п-0 me-3" style="max-width: 80px" />
+                <div class="row м-0 п-0">
+                    <p class="м-0 п-0 fs-5 fw-bold mb-2">
+                        Очікування рішення
+                    </p>
+                    <p class="п-0 fs-6 text-gray">
+                        У разі відхилення скарги, ви маєте можливість звернутися до суду для подальшого оскарження.
+                    </p>
+                </div>
             </div>
-        </div>
+        </div> *@
     </div>
-    <div class="col-12 p-0 mb-3">
-        <div class="d-flex justify-content-start align-content-end align-items-end">
-            <img src="~/source/scale.png" class="my-2 п-0 me-3" style="max-width: 80px" />
-            <div class="row м-0 п-0">
-                <p class="м-0 п-0 fs-5 fw-bold mb-2">
-                    Очікування рішення
-                </p>
-                <p class="п-0 fs-6 text-gray">
-                    У разі відхилення скарги, ви маєте можливість звернутися до суду для подальшого оскарження.
-                </p>
-            </div>
-        </div>
-    </div>
-
 </div>
 <div class="mt-5">
+    @{
+        var shlT = Model.Where(x => x.SectionName == "Seeking Help from a Lawyer" && x.SectionContentType == "Title").FirstOrDefault();
+        var shlD = Model.Where(x => x.SectionName == "Seeking Help from a Lawyer" && x.SectionContentType == "Description").FirstOrDefault();
+        var shlF = Model.Where(x => x.SectionName == "Seeking Help from a Lawyer" && x.SectionContentType == "Footer descr").FirstOrDefault();
+    }
     <section class="section mb-3">
-        <h2>Звернення за допомогою до адвоката</h2>
+        <h2>@(leng == "ua" ? shlT?.ua ?? "" : shlT?.en ?? "")</h2>
     </section>
 
-    <p>Оскарження штрафу може бути складним процесом, і важливо мати надійну правову підтримку. Наш адвокат Дмитро готовий допомогти вам на кожному етапі. Ми надаємо такі послуги:</p>
+    <p>@(leng == "ua" ? shlD?.ua ?? "" : shlD?.en ?? "")</p>
     <ul>
-        <li><strong>Консультації з питань оскарження штрафів:</strong> Довідки про ваші права та обов'язки, а також рекомендації по діям.</li>
+        @for (var i = 0; i <= Model.Where(x => x.SectionName == "Seeking Help from a Lawyer").Max(x => x.Order); ++i)
+        {
+            var tT = Model.Where(x => x.Order == i && x.SectionName == "Seeking Help from a Lawyer" && x.SectionContentType == "Block title").FirstOrDefault();
+            var tS = Model.Where(x => x.Order == i && x.SectionName == "Seeking Help from a Lawyer" && x.SectionContentType == "Block description").FirstOrDefault();
+            if (tT != null && tS != null) {
+                <li><strong>@(leng == "ua" ? tT.ua : tT.en)</strong> @(leng == "ua" ? tS.ua : tS.en)</li>
+            }
+        }
+      @*   <li><strong>Консультації з питань оскарження штрафів:</strong> Довідки про ваші права та обов'язки, а також рекомендації по діям.</li>
         <li><strong>Підготовка документації:</strong> Наша команда підготує всі необхідні юридичні документи для вашого випадку.</li>
         <li><strong>Представництво ваших інтересів у суді:</strong> У разі потреби, ми будемо представляти вас в судових установах та захищати ваші права.</li>
-        <li><strong>Супровід переговорів з державними органами:</strong> Можливість ведення переговорів від вашого імені для досягнення кращого результату.</li>
+        <li><strong>Супровід переговорів з державними органами:</strong> Можливість ведення переговорів від вашого імені для досягнення кращого результату.</li> *@
     </ul>
-    <p>Звернувшись до нашого адвоката, ви отримаєте надійну допомогу і комфорт у вирішенні вашої правової проблеми.</p>
+    <p>@(leng == "ua" ? shlF?.ua ?? "" : shlF?.en ?? "")</p>
    
 </div>
 <div class="d-flex justify-content-around">

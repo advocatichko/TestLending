@@ -31,7 +31,7 @@ body {
     max-width: 120px !important;
 }
 .hide-on-small-screns {
-    display: inline-block;
+    display: inline-block !important;
 }
 .media-icons {
     width: 18px;
@@ -39,7 +39,7 @@ body {
 }
 @media (min-width: 576px){
     .hide-on-small-screns {
-        display: inline-block;
+        display: inline-block !important;
     }
     .small-img {
         max-width: 120px !important;
@@ -61,7 +61,7 @@ body {
         font-size: 0.75rem;
     }
     .hide-on-small-screns{
-        display: none;
+        display: none !important;
     }
 }
 .header-gradient {
@@ -77,11 +77,11 @@ body {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#182a33",GradientType=1);*/
 }
 .reverce-header-gradient {
-    background: rgb(0,0,0);
-    background: -moz-linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(16,40,54,1) 39%, rgba(14,39,52,1) 66%, rgba(24,42,51,1) 100%);
-    background: -webkit-linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(16,40,54,1) 39%, rgba(14,39,52,1) 66%, rgba(24,42,51,1) 100%);
-    background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(16,40,54,1) 39%, rgba(14,39,52,1) 66%, rgba(24,42,51,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#000000",endColorstr="#182a33",GradientType=1);
+    background: rgb(10,11,7);
+    background: -moz-linear-gradient(180deg, rgba(10,11,7,1) 0%, rgba(54,60,19,1) 70%, rgba(77,87,28,1) 97%);
+    background: -webkit-linear-gradient(180deg, rgba(10,11,7,1) 0%, rgba(54,60,19,1) 70%, rgba(77,87,28,1) 97%);
+    background: linear-gradient(180deg, rgba(10,11,7,1) 0%, rgba(54,60,19,1) 70%, rgba(77,87,28,1) 97%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#0a0b07",endColorstr="#4d571c",GradientType=1);
 }
 .radial-header-gradient {
     background: rgb(20,19,0);
@@ -147,13 +147,20 @@ h1 {
 .h-60 {
     line-height: 60px;
 }
+.bg-transparent-light {
+    background-color: #a7a7a757 !important;
+}
+.millitary-back-70 {
+    background-color: gray !important;
+    background-image: url(../source/2262.png);
+    background-position-y: 65%
+}
 
 .millitary-back {
     background-color: gray !important;
-    background-image: url(../source/Ukrainian_military_vehicle_pixel_camouflage,_2016_pattern.svg.png);
-    background-size: 100px 100px;
+    background-image: url(../source/2262.png);
+    background-position-y: 0%
 }
-
 .opacity-03 {
     opacity: .3 !important;
 }
