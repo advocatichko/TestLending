@@ -1,0 +1,89 @@
+<div class="modal fade" id="orderFormModal" tabindex="-1" aria-labelledby="orderFormModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="orderFormModalLabel">Замовити оскарження</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="orderForm" method="post" action="/Home/SendApplication" onsubmit="return false;">
+                    <div class="mb-3">
+                        <label for="fullName" class="form-label">П.І.Б.</label>
+                        <input type="text" class="form-control" id="fullName" name="Name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="phoneNumber" class="form-label">Номер телефону</label>
+                        <input type="tel" class="form-control" id="phoneNumber" name="Phone" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="Email" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="message" class="form-label">Повідомлення</label>
+                        <textarea class="form-control" id="message" name="Message" rows="3"></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-blue">Відправити</button>
+                </form>
+                <div id="successMessage" class="alert alert-success mt-3" style="display: none;">
+                    Ваша заявка відправлена, зв'яжемось протягом 10 хвилин.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    if (window.orderFormListenerAdded) return; // Предотвращаем повторную инициализацию
+    window.orderFormListenerAdded = true;
+
+    const orderForm = document.getElementById("orderForm");
+    const successMessage = document.getElementById("successMessage");
+    const modal = new bootstrap.Modal(document.getElementById("orderFormModal"));
+    const submitButton = orderForm.querySelector('button[type="submit"]');
+
+    // Автоматическое подтягивание данных клиента
+    modal._element.addEventListener("show.bs.modal", function () {
+        fetch("/Home/GetClientData")
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("fullName").value = data.name || "";
+                document.getElementById("phoneNumber").value = data.phone || "";
+                document.getElementById("email").value = data.email || "";
+            })
+            .catch(error => console.error("Ошибка при получении данных клиента:", error));
+    });
+
+    orderForm.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        submitButton.disabled = true;
+
+        const formData = new FormData(orderForm);
+        const response = await fetch(orderForm.action, {
+            method: "POST",
+            body: formData
+        });
+
+        if (response.ok) {
+            const message = await response.text();
+            successMessage.textContent = message;
+            successMessage.style.display = "block";
+            setTimeout(() => {
+                modal.hide();
+                successMessage.style.display = "none";
+                orderForm.reset();
+                submitButton.disabled = false;
+            }, 9000);
+        } else {
+            const errorMessage = await response.text();
+            successMessage.textContent = errorMessage;
+            successMessage.style.display = "block";
+            submitButton.disabled = false;
+        }
+    });
+});
+</script>
+
+
