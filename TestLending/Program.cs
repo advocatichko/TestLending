@@ -1,5 +1,12 @@
 var builder = WebApplication.CreateBuilder(args);
 
+// Configure Kestrel to listen on all interfaces - HTTP only on port 6969
+builder.WebHost.ConfigureKestrel(serverOptions =>
+{
+    // HTTP endpoint on port 6969
+    serverOptions.ListenAnyIP(6969);
+});
+
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
@@ -9,11 +16,12 @@ var app = builder.Build();
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-    app.UseHsts();
+    // Comment out HSTS since we're not using HTTPS
+    // app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+// Comment out HTTPS redirection since we're not using HTTPS
+// app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
