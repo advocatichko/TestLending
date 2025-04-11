@@ -47,21 +47,13 @@ builder.Services.AddResponseCaching();
 
 var app = builder.Build();
 
-// Enforce HTTPS redirection
-app.UseHttpsRedirection();
-
-// Add HSTS (HTTP Strict Transport Security)
-app.UseHsts();
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
     app.UseExceptionHandler("/Home/Error");
-    // Comment out HSTS since we're not using HTTPS
+    // Поскольку мы используем только HTTP, отключаем HTTPS редирект и HSTS
+    // app.UseHttpsRedirection();
     // app.UseHsts();
-    
-    // Enable response compression in production
-    app.UseResponseCompression();
 }
 else
 {
@@ -69,16 +61,13 @@ else
     app.UseDeveloperExceptionPage();
 }
 
-// Use middleware in the correct order (each only once)
+// Включаем сжатие ответов для всех окружений
+app.UseResponseCompression();
+
+// Use middleware in the correct order
 app.UseRouting();
 
-// Only add UseResponseCompression once if not already added in the production block
-if (app.Environment.IsDevelopment())
-{
-    app.UseResponseCompression();
-}
-
-// Only add UseResponseCaching once
+// Включаем кэширование
 app.UseResponseCaching();
 
 // Улучшаем кэширование статических файлов
