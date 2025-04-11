@@ -3,7 +3,7 @@ using Microsoft.Net.Http.Headers;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configure Kestrel to listen on all interfaces - HTTP only on port 6969
+// Configure Kestrel to listen on all interfaces - HTTP on port 6969
 builder.WebHost.ConfigureKestrel(serverOptions =>
 {
     // HTTP endpoint on port 6969

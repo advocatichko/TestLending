@@ -1,22 +1,56 @@
-<div class="youtube-facade" style="position: relative; width: 100%; max-width: 560px; height: 315px; background: url('https://img.youtube.com/vi/1_wrWBuaZ4o/hqdefault.jpg') center center / cover no-repeat; cursor: pointer;">
-    <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-        <svg xmlns="http://www.w3.org/2000/svg" width="68" height="48" viewBox="0 0 68 48" fill="none">
-            <path fill="#FF0000" d="M66.52 7.2c-.78-2.93-3.08-5.23-6.01-6.01C56.92 0 34 0 34 0S11.08 0 7.49 1.19c-2.93.78-5.23 3.08-6.01 6.01C0 10.79 0 24 0 24s0 13.21 1.19 16.8c.78 2.93 3.08 5.23 6.01 6.01C11.08 48 34 48 34 48s22.92 0 26.51-1.19c2.93-.78 5.23-3.08 6.01-6.01C68 37.21 68 24 68 24s0-13.21-1.48-16.8z"/>
-            <path fill="#FFF" d="M45 24L27 14v20l18-10z"/>
-        </svg>
+@model string
+@{
+    var videoId = Model;
+    var thumbnailUrl = $"https://i.ytimg.com/vi/{videoId}/hqdefault.jpg";
+}
+
+<div class="youtube-facade rounded shadow-sm" 
+     data-video-id="@videoId" 
+     style="position: relative; width: 100%; max-width: 560px; height: 315px; margin: 0 auto; background: #000; overflow: hidden;">
+    <div class="thumbnail" style="position: absolute; width: 100%; height: 100%; background: url('@thumbnailUrl') center center / cover no-repeat; transition: all 0.3s;">
+        <div class="play-button" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); transition: all 0.3s;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="68" height="48" viewBox="0 0 68 48" fill="none">
+                <path fill="#FF0000" d="M66.52 7.2c-.78-2.93-3.08-5.23-6.01-6.01C56.92 0 34 0 34 0S11.08 0 7.49 1.19c-2.93.78-5.23 3.08-6.01 6.01C0 10.79 0 24 0 24s0 13.21 1.19 16.8c.78 2.93 3.08 5.23 6.01 6.01C11.08 48 34 48 34 48s22.92 0 26.51-1.19c2.93-.78 5.23-3.08 6.01-6.01C68 37.21 68 24 68 24s0-13.21-1.48-16.8z"/>
+                <path fill="#FFF" d="M45 24L27 14v20l18-10z"/>
+            </svg>
+        </div>
     </div>
 </div>
+
 <script>
-    document.querySelectorAll('.youtube-facade').forEach(facade => {
-        facade.addEventListener('click', function () {
-            const iframe = document.createElement('iframe');
-            iframe.src = 'https://www.youtube.com/embed/1_wrWBuaZ4o?rel=0&autoplay=1';
-            iframe.width = '560';
-            iframe.height = '315';
-            iframe.frameBorder = '0';
-            iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
-            iframe.allowFullscreen = true;
-            this.replaceWith(iframe);
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.youtube-facade').forEach(facade => {
+            // Add hover effect for better UX
+            facade.addEventListener('mouseenter', function() {
+                this.querySelector('.thumbnail').style.transform = 'scale(1.05)';
+                this.querySelector('.play-button').style.transform = 'translate(-50%, -50%) scale(1.1)';
+            });
+            
+            facade.addEventListener('mouseleave', function() {
+                this.querySelector('.thumbnail').style.transform = 'scale(1)';
+                this.querySelector('.play-button').style.transform = 'translate(-50%, -50%) scale(1)';
+            });
+            
+            facade.addEventListener('click', function() {
+                const videoId = this.getAttribute('data-video-id');
+                const iframe = document.createElement('iframe');
+                iframe.src = `https://www.youtube.com/embed/${videoId}?rel=0&autoplay=1`;
+                iframe.width = '100%';
+                iframe.height = '100%';
+                iframe.style.position = 'absolute';
+                iframe.style.top = '0';
+                iframe.style.left = '0';
+                iframe.frameBorder = '0';
+                iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+                iframe.allowFullscreen = true;
+                
+                // Clear the facade content and add the iframe
+                this.innerHTML = '';
+                this.appendChild(iframe);
+                
+                // Indicate this is now an active embed
+                this.classList.add('active-embed');
+            });
         });
     });
 </script>

@@ -2,16 +2,8 @@
     <h2 class="fs-4 fw-bold text-center">Реальні кейси</h2>
     <div class="row justify-content-center">
         <div class="col-12 col-md-8">
-            <div class="ratio ratio-16x9" id="video-container">
-                <iframe 
-                    src="https://www.youtube.com/embed/1_wrWBuaZ4o?rel=0" 
-                    title="Оскарження штрафу за неявку по повістці" 
-                    frameborder="0" 
-                    loading="lazy"
-                    importance="low"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
-                    allowfullscreen>
-                </iframe>
+            <div id="video-container">
+                @await Html.PartialAsync("_YouTubeEmbedFacade", "1_wrWBuaZ4o")
             </div>
             <div class="text-center mt-2">
                 <p class="video-caption">Оскарження штрафу за неявку по повістці</p>
@@ -43,17 +35,6 @@
         font-size: 16px;
         color: #333;
         margin-top: 8px;
-    }
-    
-    .ratio-16x9 {
-        border-radius: 8px;
-        overflow: hidden;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        will-change: contents;
-    }
-    
-    #video-container {
-        contain: layout paint;
     }
     
     /* Make sure that #main-description has appropriate styling for LCP performance */
