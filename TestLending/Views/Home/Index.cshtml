@@ -1,0 +1,66 @@
+﻿@{
+    ViewData["Title"] = "Оскарження штрафу ТЦК";
+    // Render critical LCP content
+}
+
+@* Preload critical font for LCP element *@
+<link rel="preload" href="https://fonts.gstatic.com/s/unbounded/v3/Yq6H-hqZeOUC88i-_1VZlg.woff2" as="font" type="font/woff2" crossorigin>
+
+@* Move TargetAudience section up as it likely contains the LCP element *@
+@await Html.PartialAsync("~/Views/Home/Partials/_TargetAudience.cshtml")
+
+@* Inline critical styles for LCP element *@
+<style>
+    #main-description {
+        font-family: 'Unbounded', sans-serif;
+        font-size: 1rem;
+        line-height: 1.4;
+        color: #fff;
+        max-width: 630px;
+        min-height: 4.5rem;
+        display: block;
+        visibility: visible;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+    }
+</style>
+
+@* Use ViewContext.HttpContext instead of direct HttpContext access *@
+@{
+    // Force flush to browser for early rendering of critical content
+    await ViewContext.HttpContext.Response.Body.FlushAsync();
+}
+
+@* Load metadata and schema data *@
+@await Html.PartialAsync("~/Views/Home/Partials/_MetaTags.cshtml")
+@await Html.PartialAsync("~/Views/Home/Partials/_SchemaData.cshtml")
+
+@* Load the rest of the content after the priority section *@
+@await Html.PartialAsync("~/Views/Home/Partials/_Services.cshtml")
+@await Html.PartialAsync("~/Views/Home/Partials/_Results.cshtml")
+
+@* Defer less important sections *@
+@await Html.PartialAsync("~/Views/Home/Partials/_Cases.cshtml")
+@await Html.PartialAsync("~/Views/Home/Partials/_WhyUs.cshtml")
+@await Html.PartialAsync("~/Views/Home/Partials/_YourRights.cshtml")
+@await Html.PartialAsync("~/Views/Home/Partials/_AppealSteps.cshtml")
+@await Html.PartialAsync("~/Views/Home/Partials/_LawyerHelp.cshtml")
+
+@await Html.PartialAsync("~/Views/Home/Partials/_ContactForm.cshtml")
+
+<script>
+    // Optimize font loading
+    document.addEventListener('DOMContentLoaded', function() {
+        const fontStyle = document.createElement('style');
+        fontStyle.textContent = `
+            @@font-face {
+                font-family: 'Unbounded';
+                font-style: normal;
+                font-weight: 400;
+                font-display: swap;
+                src: url(https://fonts.gstatic.com/s/unbounded/v3/Yq6H-hqZeOUC88i-_1VZlg.woff2) format('woff2');
+            }
+        `;
+        document.head.appendChild(fontStyle);
+    });
+</script>

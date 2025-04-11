@@ -1,0 +1,164 @@
+@* Critical CSS to be inlined in the head to eliminate render-blocking resources *@
+<style>
+    /* Font loading optimization with size-adjust to prevent layout shifts */
+    @@font-face {
+        font-family: 'Unbounded';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/unbounded/v3/Yq6H-hqZeOUC88i-_1VZlg.woff2) format('woff2');
+        size-adjust: 100%;
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    
+    @@font-face {
+        font-family: 'Unbounded';
+        font-style: normal;
+        font-weight: 700;
+        font-display: swap;
+        src: url(https://fonts.gstatic.com/s/unbounded/v3/Yq6H-hqZeOUC88i-_1VZlg.woff2) format('woff2');
+        size-adjust: 100%;
+        unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0300-0301, U+0303-0304, U+0308-0309, U+0323, U+0329, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    
+    /* System font fallback to minimize layout shifts */
+    html {
+        font-size: 14px;
+        position: relative;
+        min-height: 100%;
+    }
+
+    body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        /* Add system UI fonts as fallbacks to prevent layout shifts */
+        font-family: 'Unbounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #ffffff;
+        color: #033d5a;
+        font-size: 1rem;
+        margin-bottom: 60px;
+    }
+
+    /* Critical header gradient */
+    .header-gradient {
+        background: rgb(0,0,0);
+        background: linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(16,40,54,1) 55%, rgba(14,39,52,1) 83%, rgba(24,42,51,1) 100%);
+    }
+
+    /* Critical header description with fixed dimensions to prevent layout shifts */
+    .header-description {
+        max-width: 630px;
+        line-height: 1.4;
+        font-weight: 400;
+        color: #fff;
+        text-rendering: optimizeLegibility;
+        -webkit-font-smoothing: antialiased;
+        display: block;
+        transform: translateZ(0);
+        backface-visibility: hidden;
+        /* Set explicit min-height to prevent layout shifts */
+        min-height: 4.5rem;
+    }
+
+    /* Set explicit dimensions for elements that might shift */
+    h1.fs-2 {
+        min-height: 2.5rem;
+        line-height: 1.2;
+    }
+
+    /* Critical button styles with fixed dimensions */
+    .btn-with-shadow {
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+        transition: all 0.3s ease;
+        /* Fixed height to prevent layout shifts */
+        height: auto;
+        min-height: 3rem;
+    }
+
+    /* Critical colors */
+    .text-gold {
+        color: #d7af57 !important;
+    }
+
+    .bg-dark-transparent {
+        background-color: #00000057 !important;
+    }
+
+    /* Critical utility classes */
+    .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+
+    /* Header wrapper with fixed dimensions to prevent layout shifts */
+    .header-wrapper {
+        min-height: 400px;
+        contain: layout size;
+    }
+
+    /* Link colors */
+    .link-secondary {
+        color: white !important;
+    }
+
+    /* Font awesome icon placeholders to prevent layout shifts */
+    .fa-icon-placeholder {
+        display: inline-block;
+        width: 1em;
+        height: 1em;
+        vertical-align: -0.125em;
+    }
+
+    /* Media queries for responsive text */
+    @@media (min-width: 768px) {
+        html {
+            font-size: 16px;
+        }
+    }
+
+    /* Critical CSS for above-the-fold content */
+    body {
+        margin: 0;
+        font-family: 'Unbounded', sans-serif;
+        background-color: #f8f9fa;
+    }
+    header {
+        background: linear-gradient(to bottom, #343a40, #212529);
+        color: white;
+        padding: 20px;
+        text-align: center;
+    }
+    button {
+        background-color: #007bff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        font-size: 16px;
+        cursor: pointer;
+    }
+    button:hover {
+        background-color: #0056b3;
+    }
+</style>
+
+<!-- Preload critical fonts to prevent layout shifts -->
+<link rel="preload" href="https://fonts.gstatic.com/s/unbounded/v3/Yq6H-hqZeOUC88i-_1VZlg.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="~/lib/fontawesome-free-6.7.2-web/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+
+<!-- Noscript fallback -->
+<noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700&display=swap">
+</noscript>
+
+<!-- Prevent font rendering adjustments during loading -->
+<script>
+    document.documentElement.classList.add('fonts-loading');
+    if (sessionStorage.fontsLoaded) {
+        document.documentElement.classList.add('fonts-loaded');
+        document.documentElement.classList.remove('fonts-loading');
+    }
+</script>
