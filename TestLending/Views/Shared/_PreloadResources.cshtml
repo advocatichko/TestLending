@@ -1,0 +1,22 @@
+@* Add this partial to _Layout.cshtml before the closing </head> tag *@
+<link rel="preload" href="~/css/site.css" as="style" />
+<link rel="preconnect" href="https://fonts.googleapis.com" crossorigin />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link rel="preconnect" href="https://www.youtube.com" />
+<link rel="preconnect" href="https://img.youtube.com" />
+
+<link rel="stylesheet" href="~/css/landing-page.css" media="print" onload="this.media='all'">
+<link rel="stylesheet" href="~/css/site.css?v=5tqJnED43" media="print" onload="this.media='all'">
+<script src="~/js/site.js?v=12WQXUhMx" defer></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
+
+<script>
+    // Register a callback for when the largest contentful paint happens
+    const observer = new PerformanceObserver((list) => {
+        const entries = list.getEntries();
+        const lastEntry = entries[entries.length - 1];
+        console.log('LCP:', lastEntry.startTime);
+        console.log('LCP element:', lastEntry.element);
+    });
+    observer.observe({ type: 'largest-contentful-paint', buffered: true });
+</script>

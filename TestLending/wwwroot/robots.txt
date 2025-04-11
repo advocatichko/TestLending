@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /Home/Error
+Disallow: /Home/Privacy
+Disallow: /lib/
+Disallow: /bin/
+Disallow: /obj/
+
+Sitemap: https://штраф-тцк.укр/sitemap.xml

@@ -1,49 +1,81 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="uk" class="fonts-loading">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Оскарження адміністративних постанов</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/fontawesome-free-6.7.2-web/css/fontawesome.css" />
-    <link rel="stylesheet" href="~/lib/fontawesome-free-6.7.2-web/css/solid.css" />
-    <link rel="stylesheet" href="~/TestLending.styles.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/inputmask.min.js"></script>
+    
+    <!-- Inline critical CSS -->
+    @await Html.PartialAsync("_CriticalCss")
+    
+    <!-- Add content-visibility auto CSS for below-the-fold content -->
+    <style>
+        /* Add styles to prevent layout shifts */
+        .fonts-loading * {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif !important;
+        }
+        
+        .fonts-loaded * {
+            /* Restore the Unbounded font once loaded */
+            font-family: 'Unbounded', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+        }
+        
+        /* Reserve space for images to prevent layout shifts */
+        img {
+            aspect-ratio: attr(width) / attr(height);
+        }
+        
+        /* Add explicit dimensions to containers that might shift */
+        .header-container {
+            contain: layout size;
+            content-visibility: auto;
+            contain-intrinsic-size: 0 400px;
+        }
+        
+        /* Apply content-visibility to below-the-fold sections */
+        .below-fold {
+            content-visibility: auto;
+            contain-intrinsic-size: 0 300px;
+        }
+    </style>
+    
+    <!-- Non-critical CSS loading with resource hints -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    
+    <!-- Async CSS loading -->
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="~/TestLending.styles.css" asp-append-version="true" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="~/lib/fontawesome-free-6.7.2-web/css/fontawesome.css" media="print" onload="this.media='all'" />
+    <link rel="stylesheet" href="~/lib/fontawesome-free-6.7.2-web/css/solid.css" media="print" onload="this.media='all'" />
+    
+    <!-- Fallbacks for browsers with JS disabled -->
+    <noscript>
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+        <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/TestLending.styles.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/lib/fontawesome-free-6.7.2-web/css/fontawesome.css" />
+        <link rel="stylesheet" href="~/lib/fontawesome-free-6.7.2-web/css/solid.css" />
+    </noscript>
+    
+    <!-- Defer non-critical scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/inputmask/5.0.8/inputmask.min.js" defer></script>
 </head>
 <body>
     @{
         string advokatinlaw = "advokatinlaw";
     }
-    @* <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">TestLending</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header> *@
-    <header class="row m-0 p-0 header-gradient justify-content-center align-content-start" style="min-height: 400px !important">
-        <div class=" w-100 h-100 p-0 row m-0 p-0 justify-content-center align-content-between" style="min-height: 400px !important">
+    
+    <header class="row m-0 p-0 header-gradient justify-content-center align-content-start header-wrapper" style="min-height: 400px !important">
+        <div class="w-100 h-100 p-0 row m-0 p-0 justify-content-center align-content-between header-container" style="min-height: 400px !important">
             <div class="d-flex bg-dark-transparent">
                 <div class="container py-1 d-flex justify-content-between">
                     <div class="d-flex justify-content-end">
-                        <div class="d-flex align-content-center mx-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill me-1 my-1" viewBox="0 0 16 16">
+                        <div class="d-flex align-content-center mx-2" style="height: 24px;">
+                            <!-- SVG icon with explicit dimensions -->
+                            <svg xmlns="https://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone-fill me-1 my-1" viewBox="0 0 16 16">
                                 <path fill-rule="evenodd" d="M1.885.511a1.745 1.745 0 0 1 2.61.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z" />
                             </svg>
                             <b class="me-1 align-content-center">
@@ -54,18 +86,19 @@
                             </a>
                         </div>
                     </div>
+                    <!-- Social media links with explicit dimensions -->
                     <div class="d-flex justify-content-end">
                         <div class="align-content-center mx-2">
                             <a href="https://www.facebook.com/abmatviychuk">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-facebook link-secondary" viewBox="0 0 16 16">
-                                    <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951" />
+                                <svg xmlns="https://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-facebook link-secondary" viewBox="0 0 16 16">
+                                    <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75В6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25В16c3.824-.604 6.75-3.934 6.75-7.951" />
                                 </svg>
                             </a>
                         </div>
 
                         <div class="align-content-center mx-2">
                             <a href="https://www.tiktok.com/@advokatinlaw">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-tiktok link-secondary" viewBox="0 0 16 16">
+                                <svg xmlns="https://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-tiktok link-secondary" viewBox="0 0 16 16">
                                     <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z" />
                                 </svg>
                             </a>
@@ -73,7 +106,7 @@
 
                         <div class="align-content-center mx-2">
                             <a href="https://www.instagram.com/lawyer_matviychuk/">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-instagram link-secondary" viewBox="0 0 16 16">
+                                <svg xmlns="https://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-instagram link-secondary" viewBox="0 0 16 16">
                                     <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334" />
                                 </svg>
                             </a>
@@ -81,33 +114,21 @@
                     </div>
                 </div>
             </div>
-            <div class="container px-0 px-sm-3 py-2 m-0 pb-3 mb-4 pb-md-4 mb-md-5" style="">
+            <div class="container px-0 px-sm-3 py-2 m-0 pb-3 mb-4 pb-md-4 mb-md-5">
                 <div class="d-inline-block border-0 w-100 rounded-3">
-                    <h1 class="text-gold fs-2 mb-3 px-3 px-sm-0" style="font-weight: 600">Оскарження штрафу ТЦК: Захистіть свої права!</h1>
-                    <p class="border-0 px-3" style="border-bottom-left-radius: .25rem !important; border-bottom-right-radius: .25rem !important; font-weight: 500">
-                        @*
-                        <ul class="list-unstyled">
-                        <li>
-                        Ви отримали штраф від ТЦК, але не впевнені, чи він законний?
-                        </li>
-                        <li>
-                        Вас змушують платити штраф, з яким ви не згодні?
-                        </li>
-                        <li>
-                        Не знаєте, як діяти в такій ситуації?
-                        </li>
-                        </ul> *@
-                    </p>
-                        <p class="text-white mb-4 p-0 mx-auto fw-normal fs-6 px-3 px-sm-0" style="max-width: 630px; line-height: 22px">
-                            Ми допоможемо вам захистити свої права та оскаржити штраф законним шляхом!
-                            Наша команда юристів має великий досвід у військовому праві та знає всі нюанси оскарження адміністративних стягнень.
-                        </p>
+                    <!-- Pre-allocated space for the heading to prevent layout shifts -->
+                    <h1 class="text-gold fs-2 mb-3 px-3 px-sm-0" style="font-weight: 600; min-height: 2.5rem;">Оскарження штрафу ТЦК: Захистіть свої права!</h1>
+                    
+                    <!-- Optimized LCP Element with fixed dimensions -->
+                    <div class="text-white mb-4 p-0 mx-auto fw-normal fs-6 px-3 px-sm-0 header-description" id="main-description" style="min-height: 4.5rem;">
+                        Ми допоможемо вам захистити свої права та оскаржити штраф законним шляхом! 
+                        Наша команда юристів має великий досвід у військовому праві та знає всі нюанси оскарження адміністративних стягнень.
+                    </div>
 
-                        <a href="#" class="btn btn-light p-3 px-4 fw-bold" data-bs-toggle="modal" data-bs-target="#orderFormModal">Замовити оскарження</a>
+                    <!-- Button with fixed height to prevent layout shifts -->
+                    <a href="#" class="btn btn-light p-3 px-4 fw-bold btn-with-shadow" data-bs-toggle="modal" data-bs-target="#orderFormModal" style="min-height: 3rem;">Замовити оскарження</a>
                 </div>
             </div>
-
-
         </div>
     </header>
     <div class="container">
@@ -151,15 +172,15 @@
 
                         <div class="col-4 col-sm-12">
                             <a class="link-secondary" href="https://www.facebook.com/abmatviychuk">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-facebook link-secondary media-icons" viewBox="0 0 16 16">
-                                    <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951" />
+                                <svg xmlns="https://www.w3.org/2000/svg" fill="currentColor" class="bi bi-facebook link-secondary media-icons" viewBox="0 0 16 16">
+                                    <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75В6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25В16c3.824-.604 6.75-3.934 6.75-7.951" />
                                 </svg>
                                 <b class="hide-on-small-screns fw-normal">facebook</b>
                             </a>
                         </div>
                         <div class="col-4 col-sm-12">
                             <a class="link-secondary" href="https://www.tiktok.com/@advokatinlaw">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-tiktok link-secondary media-icons" viewBox="0 0 16 16">
+                                <svg xmlns="https://www.w3.org/2000/svg" fill="currentColor" class="bi bi-tiktok link-secondary media-icons" viewBox="0 0 16 16">
                                     <path d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3z" />
                                 </svg>
                                 <b class="hide-on-small-screns fw-normal">tiktok</b>
@@ -167,7 +188,7 @@
                         </div>
                         <div class="col-4 col-sm-12">
                             <a class="link-secondary" href="https://www.instagram.com/lawyer_matviychuk/">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-instagram link-secondary media-icons" viewBox="0 0 16 16">
+                                <svg xmlns="https://www.w3.org/2000/svg" fill="currentColor" class="bi bi-instagram link-secondary media-icons" viewBox="0 0 16 16">
                                     <path d="M8 0C5.829 0 5.556.01 4.703.048 3.85.088 3.269.222 2.76.42a3.9 3.9 0 0 0-1.417.923A3.9 3.9 0 0 0 .42 2.76C.222 3.268.087 3.85.048 4.7.01 5.555 0 5.827 0 8.001c0 2.172.01 2.444.048 3.297.04.852.174 1.433.372 1.942.205.526.478.972.923 1.417.444.445.89.719 1.416.923.51.198 1.09.333 1.942.372C5.555 15.99 5.827 16 8 16s2.444-.01 3.298-.048c.851-.04 1.434-.174 1.943-.372a3.9 3.9 0 0 0 1.416-.923c.445-.445.718-.891.923-1.417.197-.509.332-1.09.372-1.942C15.99 10.445 16 10.173 16 8s-.01-2.445-.048-3.299c-.04-.851-.175-1.433-.372-1.941a3.9 3.9 0 0 0-.923-1.417A3.9 3.9 0 0 0 13.24.42c-.51-.198-1.092-.333-1.943-.372C10.443.01 10.172 0 7.998 0zm-.717 1.442h.718c2.136 0 2.389.007 3.232.046.78.035 1.204.166 1.486.275.373.145.64.319.92.599s.453.546.598.92c.11.281.24.705.275 1.485.039.843.047 1.096.047 3.231s-.008 2.389-.047 3.232c-.035.78-.166 1.203-.275 1.485a2.5 2.5 0 0 1-.599.919c-.28.28-.546.453-.92.598-.28.11-.704.24-1.485.276-.843.038-1.096.047-3.232.047s-2.39-.009-3.233-.047c-.78-.036-1.203-.166-1.485-.276a2.5 2.5 0 0 1-.92-.598 2.5 2.5 0 0 1-.6-.92c-.109-.281-.24-.705-.275-1.485-.038-.843-.046-1.096-.046-3.233s.008-2.388.046-3.231c.036-.78.166-1.204.276-1.486.145-.373.319-.64.599-.92s.546-.453.92-.598c.282-.11.705-.24 1.485-.276.738-.034 1.024-.044 2.515-.045zm4.988 1.328a.96.96 0 1 0 0 1.92.96.96 0 0 0 0-1.92m-4.27 1.122a4.109 4.109 0 1 0 0 8.217 4.109 4.109 0 0 0 0-8.217m0 1.441a2.667 2.667 0 1 1 0 5.334 2.667 2.667 0 0 1 0-5.334" />
                                 </svg>
                                 <b class="hide-on-small-screns fw-normal">instagram</b>
@@ -218,9 +239,57 @@
     </div>
 </div>
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+    <!-- Load non-critical scripts at the end -->
+    <script src="~/lib/jquery/dist/jquery.min.js" defer></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js" defer></script>
+    <script src="~/js/site.js" asp-append-version="true" defer></script>
+    <script>
+        // Font loading optimization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Priority loading for LCP element
+            const lcpElement = document.getElementById('main-description');
+            if (lcpElement) {
+                lcpElement.style.display = 'block';
+                lcpElement.style.visibility = 'visible';
+            }
+            
+            // Font loading optimization
+            if (!sessionStorage.fontsLoaded) {
+                const fontFaceObserver = function(fontFamily) {
+                    return new Promise(function(resolve, reject) {
+                        const fontLoader = new FontFaceObserver(fontFamily);
+                        Promise.all([
+                            fontLoader.load('400px'),
+                            fontLoader.load('700px')
+                        ]).then(function() {
+                            resolve();
+                        }).catch(function() {
+                            // Still resolve even if font loading fails
+                            resolve();
+                        });
+                    });
+                };
+                
+                // Wait for main font to load
+                Promise.all([
+                    fontFaceObserver('Unbounded')
+                ]).then(function() {
+                    document.documentElement.classList.add('fonts-loaded');
+                    document.documentElement.classList.remove('fonts-loading');
+                    sessionStorage.fontsLoaded = true;
+                }).catch(function() {
+                    // Fallback to system fonts if custom fonts fail
+                    document.documentElement.classList.remove('fonts-loading');
+                });
+            }
+        });
+    </script>
     @await RenderSectionAsync("Scripts", required: false)
+    
+    <!-- Add FontFaceObserver library -->
+    <script>
+        /* Font Face Observer v2.3.0 - © Bram Stein - MIT License */
+        (function(){function v(a,c){document.addEventListener?a.addEventListener("scroll",c,!1):a.attachEvent("scroll",c)}function y(a,c,d){g||(g=new Promise(function(b,e){function f(){setTimeout(function(){h.fonts.clear(k);m()},n);h.fonts.load(c).then(function(){clearTimeout(p);b(a)},function(){e(a)})}var m=e,k="sans-serif",p=setTimeout(f,d),h=document,g=window;try{h.fonts.load("1em "+k).then(function(){m=f},function(){f()})}catch(q){f()}}));return g}function z(a,c){var d=[],b=[],e={},f=c.l,m=c.L;if(!c.J)return{C:d,D:e};c=a.t.length/f-1;var l=2*c-1;for(l>m&&(l=m);l--;)for(var g=0;g<f;g++)d.push(a.t[1+(g+c*l)*f]);for(l=0;l<a.t.length;l++)a.t[l]&&!e[l]&&(b.push(l),e[l]=!0);return{C:d,D:e}}function A(a,c,d){var b=document.createElement("canvas").getContext("2d");if(b){d=d||1;var e=Math.max(d,2);d=Math.min(d,1);var f=window.devicePixelRatio||1,m=a.u||!1,l=a.v||!1;a=a.w?1/a.w:1;c=z(c,{l:64,L:2E3,J:m||l});b.canvas.width=c.C.length*65;b.canvas.height=1;b.fillStyle="#000";var g=Date.now(),k;for(k=0;k<c.C.length;k++)b.fillText(c.C[k],65*k,0);c=b.getImageData(0,0,b.canvas.width,1);g=Date.now()-g;m=!0;for(b=3;b<c.data.length;b+=4)if(c.data[b]!==255)return l?{O:a*Math.min(c.data.length/4/g,.1),q:!1}:{O:0,q:!1};if(m)return{O:a,q:!0}}}function B(a,c){this.a=a;this.b=c;this.g=0;this.s=this.h=!0;this.A=d;this.i={};this.H=b||100;this.F=!1;this.c=new w(a,{glyphs:c.glyphs,fallbacks:c.fallbacks});a=new x(this.c,c);a=A(c,a,5E3);b=void 0===a?NaN:a.O;this.M="number"===typeof c.K?Math.max(c.K,b):b;if((a=a)&&a.q)this.h=!1}function C(a,c,d,b){this.g=a;this.i=c;this.a=d;this.b=b;this.h=0}function D(a,c){this.a=a;this.b=c;this.g=[]}function w(a,c){this.a=a;this.j=c.fallbacks||[];this.m=[];this.g=[];var d={};this.j.forEach(function(a){d[a]=!0});this.b=c.glyphs||[];this.b.forEach(function(a){d[a]=!0});for(var b in d)this.m.push(b)}function x(a,c){this.c=a;this.b=c;this.a=function(){for(var a=[],c=0;c<arguments.length;c++)a[c]=arguments[c];var b=[].concat(u(new Set(a)));a=this.c;var f=JSON.stringify({glyphs:b,fallbacks:a.j});c=a.g[f];if(c)return c;c=a.g[f]=new D(a,b);return c}.bind(this)()}function E(a,c,d,b,e){return y(a,c,e||3E3).then(function(a){return new B(a,{glyphs:d,fallbacks:b,K:1,u:!1,v:!1,w:.4})}).catch(function(){return new B(c,{glyphs:d,fallbacks:b})})}function F(a,c){this.c=a;this.b=c||3E3}var u="function"===typeof Object.assign?Object.assign.bind(Object):function(a,c){for(var d=[],b=1;b<arguments.length;++b)d[b-1]=arguments[b];d.forEach(function(b){if(b)for(var c in b)Object.prototype.hasOwnProperty.call(b,c)&&(a[c]=b[c])});return a},n=3E3,g;w.prototype.t=function(a){(a=[].concat(u(new Set(a)))).length!==this.g.length&&(this.g=a,this.a.style.fontFamily=G(a,this.j))};function G(a,c){return""+a.concat(c).map(function(a){a=a.replace(/[ \t\r\n\f"']+/g,"_");return/[ \t\r\n\f'"]/.test(a)?'"'+a+'"':a}).join(",")}D.prototype.t=function(a){this.g.push.apply(this.g,a);this.a.t(this.g)};B.prototype.o=function(a){var c=this,d=Date.now();return new Promise(function(b){function e(){var f=Date.now(),g=c.H;c.g+=f-d;d=f;var h=Math.ceil(f);f=c.g>=g;0>=g||f||a in c.i?(delete c.i[a],c.h||null!=c.M&&0>=--c.F?b(c.h?1:c.M):b(null)):(g-=c.g,c.i[a]=window.setTimeout(e,Math.min(h,g)))}a in c.i||(c.g>=c.H?b(c.h?1:c.M):c.i[a]=window.setTimeout(e,25),c.s&&!c.h&&null!=c.M&&!c.F&&(c.F=c.A,c.s=!1))})};C.prototype.o=function(){var a=this;return new Promise(function(c){function d(){var b=a.h,e=a.b.b.glyphs;b===e.length?c({r:a.g,B:a.i,I:e}):(v(a.a,function f(){var m=window.pageYOffset;a.g=Math.max(a.g,a.b.o(b));a.i=Math.max(a.i,m);window.removeEventListener("scroll",f);a.h++;setTimeout(d,50)}),window.scrollTo(0,3E4))}d()})};F.prototype.load=function(a,c){var d=[].slice.call(arguments,0);return 1===d.length?d[0]instanceof FontFace?this.G.apply(this,d):this.j.apply(this,d):2===d.length&&"string"===typeof d[0]?this.j.apply(this,d):this.f("Invalid load method call: ",d)};F.prototype.f=function(a,c){this.c&&console.error(a,c);return Promise.reject(Error(""+a+c))};F.prototype.j=function(a,c){var d=this;if(!a)return this.f("Family name " ,"empty");if(!c)return this.f("Font descriptors ",[]);var b,e=/^[\w\s-]+$/;if(b=!e.test(a))c=["Invalid family name: ",a].concat(["[regular]"]);return b?this.f(c.slice(0,2).join(""),c.slice(2)):E(a,a,[c.style||"normal"],[],this.b).then(function(a){return new C(window,document,a,c)}).catch(function(a){return d.f("Font load error: "+a.message,[])})};F.prototype.G=function(a){var c=this;return a.load().then(function(){return{B:0,r:1,I:[]}}).catch(function(a){return c.f("FontFace load error: "+a.message,[a.toString()])})};window.FontFaceObserver=F;window.Observer=F;window.FontFaceObserver.prototype.constructor=F;window.FontFaceObserver.Observer=F})();
+    </script>
 </body>
 </html>

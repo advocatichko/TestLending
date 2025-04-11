@@ -1,0 +1,91 @@
+@{
+    var schemaJson = @"{
+  ""@context"": ""https://schema.org"",
+  ""@type"": ""WebPage"",
+  ""name"": ""Оскарження штрафу за неявку по повістці - Правова допомога"",
+  ""description"": ""Професійна допомога у оскарженні штрафів за неявку по повістці від ТЦК. Законні підстави, супровід на всіх етапах, висока ефективність."",
+  ""url"": ""https://адвокат.укр/"",
+  ""publisher"": {
+    ""@type"": ""Organization"",
+    ""name"": ""Адвокат Дмитро"",
+    ""logo"": {
+      ""@type"": ""ImageObject"",
+      ""url"": ""~/source/scale.png""
+    }
+  },
+  ""primaryImageOfPage"": {
+    ""@type"": ""ImageObject"",
+    ""url"": ""~/source/scale.png""
+  },
+  ""mainEntity"": {
+    ""@type"": ""LegalService"",
+    ""name"": ""Оскарження штрафу за неявку по повістці"",
+    ""description"": ""Професійна допомога у оскарженні штрафів за неявку по повістці від ТЦК. Консультації, підготовка документів, представництво в суді."",
+    ""provider"": {
+      ""@type"": ""Organization"",
+      ""name"": ""Адвокат Дмитро"",
+      ""image"": ""~/source/scale.png""
+    },
+    ""serviceType"": ""Юридична консультація"",
+    ""areaServed"": {
+      ""@type"": ""Country"",
+      ""name"": ""Україна""
+    },
+    ""hasOfferCatalog"": {
+      ""@type"": ""OfferCatalog"",
+      ""name"": ""Послуги з оскарження штрафів"",
+      ""itemListElement"": [
+        {
+          ""@type"": ""Offer"",
+          ""itemOffered"": {
+            ""@type"": ""Service"",
+            ""name"": ""Консультація з питань оскарження штрафів""
+          }
+        },
+        {
+          ""@type"": ""Offer"",
+          ""itemOffered"": {
+            ""@type"": ""Service"",
+            ""name"": ""Підготовка документації для оскарження""
+          }
+        },
+        {
+          ""@type"": ""Offer"",
+          ""itemOffered"": {
+            ""@type"": ""Service"",
+            ""name"": ""Представництво в суді""
+          }
+        },
+        {
+          ""@type"": ""Offer"",
+          ""itemOffered"": {
+            ""@type"": ""Service"",
+            ""name"": ""Супровід переговорів з державними органами""
+          }
+        }
+      ]
+    }
+  },
+  ""breadcrumb"": {
+    ""@type"": ""BreadcrumbList"",
+    ""itemListElement"": [
+      {
+        ""@type"": ""ListItem"",
+        ""position"": 1,
+        ""name"": ""Головна"",
+        ""item"": ""https://адвокат.укр/""
+      },
+      {
+        ""@type"": ""ListItem"",
+        ""position"": 2,
+        ""name"": ""Оскарження штрафу"",
+        ""item"": ""https://адвокат.укр/оскарження-штрафу""
+      }
+    ]
+  }
+}";
+}
+
+<script type="application/ld+json">
+@Html.Raw(schemaJson)
+</script>

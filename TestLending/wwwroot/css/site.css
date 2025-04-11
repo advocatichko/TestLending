@@ -25,7 +25,31 @@ body {
     max-width: 50% !important
 }
 
+.header-description {
+    max-width: 630px;
+    line-height: 1.4;
+    font-weight: 400;
+    display: block;
+    font-display: swap;
+    text-rendering: optimizeSpeed;
+    will-change: opacity;
+    transition: opacity 0.1s ease-in;
+    opacity: 1;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
 
+.btn-with-shadow {
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    transform: translateZ(0);
+    will-change: transform, box-shadow;
+}
+
+.btn-with-shadow:hover {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+}
 
 .bg-dark-transparent {
     --bs-bg-opacity: 1;
@@ -52,4 +76,14 @@ body {
     .small_image {
         max-width: 50% !important;
     }
+}
+
+.lcp-text {
+    contain: content;
+    content-visibility: auto;
+}
+
+.lcp-text span {
+    display: inline-block;
+    margin-bottom: 0.5rem;
 }
